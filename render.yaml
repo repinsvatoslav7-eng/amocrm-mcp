@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: amocrm-mcp
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn server:app --host 0.0.0.0 --port $PORT --proxy-headers --forwarded-allow-ips="*"
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.7
+      - key: AMOCRM_BASE_URL
+        sync: false
+      - key: AMOCRM_ACCESS_TOKEN
+        sync: false
+      - key: MCP_SECRET
+        sync: false
+      - key: WRITE_ENABLED
+        value: "true"
+      - key: DANGEROUS_WRITE_ENABLED
+        value: "false"
+      - key: RATE_LIMIT_RPS
+        value: "6"
+      - key: MAX_RETRIES
+        value: "4"
+      - key: REQUEST_TIMEOUT
+        value: "30"
+      - key: MAX_RESPONSE_CHARS
+        value: "180000"
